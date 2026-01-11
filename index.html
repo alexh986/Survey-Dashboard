@@ -1754,7 +1754,11 @@
                         resp.answers.forEach(answer => {
                             const qIndex = questionFieldIds.indexOf(answer.field?.id);
                             if (qIndex !== -1 && answer.choice?.label) {
-                                const label = answer.choice.label;
+                                // Normalize label: "Strongly agree" -> "Strongly Agree"
+                                const rawLabel = answer.choice.label;
+                                const label = rawLabel.split(' ').map(word =>
+                                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                                ).join(' ');
                                 if (distribution[qIndex][label] !== undefined) {
                                     distribution[qIndex][label]++;
                                 }
