@@ -1645,14 +1645,22 @@
                 // Draw chart
                 const chartY = padding + 50;
                 if (isSingle) {
-                    // Center the doughnut chart
-                    const chartSize = 200;
-                    const chartX = (width - chartSize) / 2;
-                    ctx.drawImage(chartCanvas, chartX, chartY, chartSize, chartSize);
+                    // Center the doughnut chart - maintain aspect ratio
+                    const srcWidth = chartCanvas.width;
+                    const srcHeight = chartCanvas.height;
+                    const maxSize = 200;
+
+                    // Use the smaller dimension to keep it as a circle
+                    const scale = maxSize / Math.min(srcWidth, srcHeight);
+                    const drawWidth = srcWidth * scale;
+                    const drawHeight = srcHeight * scale;
+                    const chartX = (width - drawWidth) / 2;
+
+                    ctx.drawImage(chartCanvas, chartX, chartY, drawWidth, drawHeight);
 
                     // Draw stats below
                     if (stats) {
-                        const statsY = chartY + chartSize + 40;
+                        const statsY = chartY + drawHeight + 40;
                         const statWidth = 100;
                         const startX = (width - statWidth * 4) / 2;
 
