@@ -11,28 +11,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Sky blue foundation */
-            --bg-primary: #28AAE1;
+            /* Dark navy gradient foundation */
+            --bg-primary: #012141;
             --bg-card: #FFFFFF;
             --bg-card-hover: #FAFCFF;
             --bg-muted: #F0F6F9;
 
-            /* Deep navy text */
+            /* Dodger blue for accents/text */
             --text-primary: #012141;
             --text-secondary: #012141;
             --text-muted: #1A4A6E;
-            --text-on-blue: #FFFFFF;
+            --text-on-dark: #FFFFFF;
+            --accent-blue: #28AAE1;
 
             /* Brand colors */
-            --accent-primary: #012141;
+            --accent-primary: #28AAE1;
             --accent-gold: #D4A012;
             --accent-gold-light: #F5C842;
-            --accent-glow: rgba(212, 160, 18, 0.2);
+            --accent-glow: rgba(40, 170, 225, 0.2);
 
             /* Gold borders */
             --border: #D4A012;
             --border-light: #E8C547;
-            --border-subtle: #E8DFC9;
+            --border-subtle: rgba(40, 170, 225, 0.3);
 
             /* Survey response colors */
             --strongly-agree: #0D9488;
@@ -58,28 +59,28 @@
 
         body {
             font-family: 'DM Sans', -apple-system, sans-serif;
-            background: var(--bg-primary);
+            background: linear-gradient(135deg, #012141 0%, #023E73 50%, #01304D 100%);
             color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
         }
 
-        /* Sky blue background */
+        /* Dark navy gradient background */
         .bg-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #28AAE1;
+            background: linear-gradient(135deg, #012141 0%, #023E73 50%, #01304D 100%);
             pointer-events: none;
             z-index: -1;
         }
 
         header {
             padding: 1.25rem 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(40, 170, 225, 0.95);
+            border-bottom: 1px solid rgba(40, 170, 225, 0.3);
+            background: rgba(1, 33, 65, 0.95);
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
@@ -151,10 +152,10 @@
         .live-dot {
             width: 8px;
             height: 8px;
-            background: var(--accent-gold);
+            background: #28AAE1;
             border-radius: 50%;
             animation: blink 2s ease-in-out infinite;
-            box-shadow: 0 0 10px rgba(212, 160, 18, 0.6);
+            box-shadow: 0 0 10px rgba(40, 170, 225, 0.6);
         }
 
         @keyframes blink {
@@ -205,7 +206,7 @@
 
         .survey-card {
             background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
+            border: 2px solid rgba(40, 170, 225, 0.4);
             border-radius: 20px;
             padding: 1.75rem;
             cursor: pointer;
@@ -222,7 +223,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+            background: linear-gradient(90deg, #28AAE1, #5BC0EB);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -230,9 +231,9 @@
 
         .survey-card:hover {
             background: var(--bg-card);
-            border-color: var(--accent-gold-light);
+            border-color: #28AAE1;
             transform: translateY(-4px);
-            box-shadow: var(--shadow-lg), 0 0 30px rgba(212, 160, 18, 0.2);
+            box-shadow: var(--shadow-lg), 0 0 30px rgba(40, 170, 225, 0.3);
         }
 
         .survey-card:hover::before {
@@ -323,7 +324,7 @@
             font-weight: 700;
             line-height: 1;
             letter-spacing: -0.03em;
-            color: var(--text-primary);
+            color: #28AAE1;
         }
 
         .progress-section {
@@ -349,7 +350,7 @@
             font-family: 'Fraunces', serif;
             font-weight: 600;
             font-size: 0.95rem;
-            color: #B8860B;
+            color: #28AAE1;
         }
 
         .progress-bar-bg {
@@ -362,7 +363,7 @@
         .progress-bar-fill {
             height: 100%;
             border-radius: 4px;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+            background: linear-gradient(90deg, #28AAE1, #5BC0EB);
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -474,7 +475,7 @@
             align-items: center;
             justify-content: center;
             background: white;
-            border: 2px solid var(--accent-gold);
+            border: 2px solid #28AAE1;
             box-shadow: var(--shadow-sm);
         }
 
@@ -507,7 +508,7 @@
             font-family: 'Fraunces', serif;
             font-size: 1.75rem;
             font-weight: 700;
-            color: white;
+            color: #28AAE1;
         }
 
         .detail-stat-label {
@@ -525,7 +526,7 @@
 
         .chart-panel {
             background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
+            border: 2px solid rgba(40, 170, 225, 0.5);
             border-radius: 20px;
             padding: 1.75rem;
             box-shadow: var(--shadow-md);
@@ -545,7 +546,7 @@
 
         .insights-panel {
             background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
+            border: 2px solid rgba(40, 170, 225, 0.5);
             border-radius: 20px;
             padding: 1.75rem;
             box-shadow: var(--shadow-md);
@@ -925,6 +926,197 @@
             fill: currentColor;
         }
 
+        /* Key Insight Banner */
+        .insight-banner {
+            background: linear-gradient(135deg, #012141 0%, #023E73 100%);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(212, 160, 18, 0.3);
+        }
+
+        .insight-banner-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .insight-banner-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #012141;
+        }
+
+        .insight-banner-content {
+            flex: 1;
+        }
+
+        .insight-banner-headline {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .insight-banner-detail {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .insight-banner-stat {
+            text-align: right;
+            padding-left: 1.5rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .insight-banner-stat-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            line-height: 1;
+        }
+
+        .insight-banner-stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.25rem;
+        }
+
+        /* Response Velocity */
+        .velocity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.7rem;
+            background: rgba(13, 148, 136, 0.15);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--strongly-agree);
+            margin-top: 0.5rem;
+        }
+
+        .velocity-badge.slow {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--disagree);
+        }
+
+        .velocity-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* Presentation Mode */
+        .presentation-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .presentation-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .presentation-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Presentation Mode Active */
+        body.presentation-mode {
+            background: #012141;
+        }
+
+        body.presentation-mode .bg-gradient {
+            background: #012141;
+        }
+
+        body.presentation-mode header {
+            display: none;
+        }
+
+        body.presentation-mode .home-view {
+            padding-top: 2rem;
+        }
+
+        body.presentation-mode .page-title {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        body.presentation-mode .page-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        body.presentation-mode .insight-banner {
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+        }
+
+        body.presentation-mode .survey-cards {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        body.presentation-mode .survey-card {
+            transform: scale(1.02);
+        }
+
+        body.presentation-mode .exit-presentation {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+        }
+
+        .exit-presentation {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exit-presentation:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
         @media (max-width: 1000px) {
             .survey-cards {
                 grid-template-columns: 1fr;
@@ -982,9 +1174,18 @@
                     Live
                 </div>
                 <span class="last-updated" id="lastUpdated">Updating...</span>
+                <button class="presentation-btn" onclick="togglePresentationMode()">
+                    <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+                    Present
+                </button>
             </div>
         </div>
     </header>
+
+    <button class="exit-presentation" onclick="togglePresentationMode()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        Exit Presentation
+    </button>
 
     <main>
         <!-- HOME VIEW -->
@@ -1740,6 +1941,111 @@
             }
         }
 
+        // Presentation Mode
+        function togglePresentationMode() {
+            document.body.classList.toggle('presentation-mode');
+        }
+
+        // Update Key Insight Banner
+        function updateInsightBanner() {
+            const familyCount = familyData.count || 0;
+            const facultyCount = facultyData.count || 0;
+            const totalResponses = familyCount + facultyCount;
+            const familyPercent = Math.round((familyCount / CONFIG.familyGoal) * 100);
+            const facultyPercent = Math.round((facultyCount / CONFIG.facultyGoal) * 100);
+
+            // Calculate overall satisfaction
+            let overallSatisfaction = 0;
+            let questionCount = 0;
+
+            [...familyData.distribution, ...facultyData.distribution].forEach(q => {
+                if (!q) return;
+                const total = (q['Strongly Agree'] || 0) + (q['Agree'] || 0) + (q['Disagree'] || 0) + (q['Strongly Disagree'] || 0);
+                if (total > 0) {
+                    const positive = ((q['Strongly Agree'] || 0) + (q['Agree'] || 0)) / total * 100;
+                    overallSatisfaction += positive;
+                    questionCount++;
+                }
+            });
+
+            overallSatisfaction = questionCount > 0 ? Math.round(overallSatisfaction / questionCount) : 0;
+
+            // Generate dynamic insight
+            let headline = '';
+            let detail = '';
+
+            if (familyPercent >= 100 && facultyPercent >= 100) {
+                headline = '🎉 Both surveys have reached their goals!';
+                detail = `Amazing response with ${overallSatisfaction}% positive sentiment overall`;
+            } else if (overallSatisfaction >= 80) {
+                headline = '📈 Strong positive sentiment across responses';
+                detail = `${totalResponses} total responses with ${overallSatisfaction}% expressing satisfaction`;
+            } else if (overallSatisfaction >= 60) {
+                headline = '📊 Steady progress with room to grow';
+                detail = `${totalResponses} responses collected — some areas need attention`;
+            } else if (totalResponses > 0) {
+                headline = '⚠️ Mixed feedback — review concerns';
+                detail = `${overallSatisfaction}% positive sentiment — check areas of concern`;
+            } else {
+                headline = '🚀 Survey collection in progress';
+                detail = 'Waiting for responses to generate insights';
+            }
+
+            document.getElementById('insightHeadline').textContent = headline;
+            document.getElementById('insightDetail').textContent = detail;
+            document.getElementById('insightStatValue').textContent = overallSatisfaction + '%';
+            document.getElementById('insightStatLabel').textContent = 'Positive';
+        }
+
+        // Update Response Velocity
+        function updateVelocity(type, responses) {
+            const velocityEl = document.getElementById(`${type}Velocity`);
+            const velocityTextEl = document.getElementById(`${type}VelocityText`);
+            if (!velocityEl || !velocityTextEl) return;
+
+            // For family survey, we don't have timestamps, so estimate based on count
+            if (type === 'family') {
+                const count = familyData.count || 0;
+                if (count > 50) {
+                    velocityTextEl.textContent = 'Strong response rate';
+                    velocityEl.classList.remove('slow');
+                } else if (count > 20) {
+                    velocityTextEl.textContent = 'Moderate activity';
+                    velocityEl.classList.remove('slow');
+                } else if (count > 0) {
+                    velocityTextEl.textContent = 'Just getting started';
+                    velocityEl.classList.add('slow');
+                } else {
+                    velocityTextEl.textContent = 'Awaiting responses';
+                    velocityEl.classList.add('slow');
+                }
+                return;
+            }
+
+            // For faculty (Typeform), we have timestamps
+            if (!responses || responses.length === 0) {
+                velocityTextEl.textContent = 'Awaiting responses';
+                velocityEl.classList.add('slow');
+                return;
+            }
+
+            // Count responses in last 24 hours
+            const now = new Date();
+            const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000);
+            const recentCount = responses.filter(r => new Date(r.submitted_at) > oneDayAgo).length;
+
+            if (recentCount > 10) {
+                velocityTextEl.textContent = `🔥 ${recentCount} responses today`;
+                velocityEl.classList.remove('slow');
+            } else if (recentCount > 0) {
+                velocityTextEl.textContent = `${recentCount} response${recentCount > 1 ? 's' : ''} today`;
+                velocityEl.classList.remove('slow');
+            } else {
+                velocityTextEl.textContent = 'No responses today';
+                velocityEl.classList.add('slow');
+            }
+        }
+
         // Navigation
         function showHome() {
             document.getElementById('homeView').classList.remove('hidden');
@@ -2245,6 +2551,10 @@
                     feedbackContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">No feedback submitted yet.</p>';
                 }
 
+                // Update velocity and insights
+                updateVelocity('family', null);
+                updateInsightBanner();
+
             } catch (error) {
                 console.error('Error fetching family data:', error);
             }
@@ -2358,6 +2668,10 @@
                         <div class="feedback-type">${f.type === 'positive' ? 'Positive feedback' : 'Suggestion/Concern'}</div>
                     </div>
                 `).join('');
+
+                // Update velocity and insights
+                updateVelocity('faculty', responses);
+                updateInsightBanner();
 
             } catch (error) {
                 console.error('Error fetching faculty data:', error);
