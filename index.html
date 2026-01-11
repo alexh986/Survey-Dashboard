@@ -1603,31 +1603,148 @@
             `;
         }
 
+        // Create composite image with question, chart, and stats
+        function createCompositeImage(chartId, surveyType) {
+            return new Promise((resolve) => {
+                const chartCanvas = document.getElementById(chartId);
+                const isOverview = chartId.includes('Chart') && !chartId.includes('Single') && !chartId.includes('Timeline');
+                const isSingle = chartId.includes('Single');
+
+                // Create composite canvas
+                const composite = document.createElement('canvas');
+                const ctx = composite.getContext('2d');
+
+                // Set dimensions
+                const padding = 40;
+                const width = isSingle ? 500 : Math.max(chartCanvas.width, 600) + padding * 2;
+                let height = padding * 2;
+
+                // Get question text for single view
+                let questionText = '';
+                let stats = null;
+
+                if (isSingle) {
+                    const selectId = surveyType === 'family' ? 'familyQuestionSelect' : 'facultyQuestionSelect';
+                    const select = document.getElementById(selectId);
+                    const questions = surveyType === 'family' ? FAMILY_QUESTIONS_FULL : FACULTY_QUESTIONS_FULL;
+                    questionText = questions[select.value] || '';
+
+                    const dist = surveyType === 'family'
+                        ? familyData.distribution[select.value]
+                        : facultyData.distribution[select.value];
+                    if (dist) {
+                        stats = {
+                            sa: dist['Strongly Agree'] || 0,
+                            a: dist['Agree'] || 0,
+                            d: dist['Disagree'] || 0,
+                            sd: dist['Strongly Disagree'] || 0
+                        };
+                    }
+                    height = 450;
+                } else {
+                    height = chartCanvas.height + padding * 2 + 60;
+                }
+
+                composite.width = width;
+                composite.height = height;
+
+                // White background
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, width, height);
+
+                // Title
+                ctx.fillStyle = '#012141';
+                ctx.font = 'bold 18px DM Sans, sans-serif';
+                const title = isSingle ? questionText : (surveyType === 'family' ? 'Family Survey Results' : 'Faculty Survey Results');
+                ctx.fillText(title, padding, padding + 20);
+
+                // Draw chart
+                const chartY = padding + 50;
+                if (isSingle) {
+                    // Center the doughnut chart
+                    const chartSize = 200;
+                    const chartX = (width - chartSize) / 2;
+                    ctx.drawImage(chartCanvas, chartX, chartY, chartSize, chartSize);
+
+                    // Draw stats below
+                    if (stats) {
+                        const statsY = chartY + chartSize + 40;
+                        const statWidth = 100;
+                        const startX = (width - statWidth * 4) / 2;
+
+                        const statItems = [
+                            { label: 'Strongly Agree', value: stats.sa, color: '#0D9488' },
+                            { label: 'Agree', value: stats.a, color: '#2DD4BF' },
+                            { label: 'Disagree', value: stats.d, color: '#F59E0B' },
+                            { label: 'Strongly Disagree', value: stats.sd, color: '#E11D48' }
+                        ];
+
+                        statItems.forEach((stat, i) => {
+                            const x = startX + i * statWidth + statWidth / 2;
+
+                            ctx.fillStyle = stat.color;
+                            ctx.font = 'bold 28px Fraunces, serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(stat.value.toString(), x, statsY);
+
+                            ctx.fillStyle = '#1A4A6E';
+                            ctx.font = '10px DM Sans, sans-serif';
+                            ctx.fillText(stat.label, x, statsY + 18);
+                        });
+                        ctx.textAlign = 'left';
+                    }
+                } else {
+                    ctx.drawImage(chartCanvas, padding, chartY);
+                }
+
+                // Footer
+                ctx.fillStyle = '#1A4A6E';
+                ctx.font = '11px DM Sans, sans-serif';
+                ctx.fillText(`Generated ${new Date().toLocaleDateString()}`, padding, height - 15);
+
+                composite.toBlob(resolve, 'image/png');
+            });
+        }
+
         // Download chart as PNG
-        function downloadChart(chartId, filename) {
-            const canvas = document.getElementById(chartId);
+        async function downloadChart(chartId, filename) {
+            const surveyType = chartId.includes('family') ? 'family' : 'faculty';
+            const blob = await createCompositeImage(chartId, surveyType);
+
             const link = document.createElement('a');
             link.download = `${filename}-${new Date().toISOString().split('T')[0]}.png`;
-            link.href = canvas.toDataURL('image/png', 1.0);
+            link.href = URL.createObjectURL(blob);
             link.click();
+            URL.revokeObjectURL(link.href);
         }
 
         // Copy chart to clipboard
         async function copyChartToClipboard(chartId) {
-            const canvas = document.getElementById(chartId);
+            const btn = event.target.closest('.chart-action-btn');
+            const originalText = btn.innerHTML;
+
             try {
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                const surveyType = chartId.includes('family') ? 'family' : 'faculty';
+                const blob = await createCompositeImage(chartId, surveyType);
+
                 await navigator.clipboard.write([
                     new ClipboardItem({ 'image/png': blob })
                 ]);
-                // Show feedback
-                const btn = event.target.closest('.chart-action-btn');
-                const originalText = btn.innerHTML;
+
                 btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!';
                 setTimeout(() => { btn.innerHTML = originalText; }, 2000);
             } catch (err) {
                 console.error('Failed to copy:', err);
-                alert('Copy failed. Try downloading instead.');
+                // Fallback: trigger download instead
+                btn.innerHTML = 'Downloading...';
+                const surveyType = chartId.includes('family') ? 'family' : 'faculty';
+                const blob = await createCompositeImage(chartId, surveyType);
+                const link = document.createElement('a');
+                link.download = `chart-${new Date().toISOString().split('T')[0]}.png`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+                setTimeout(() => { btn.innerHTML = originalText; }, 2000);
             }
         }
 
