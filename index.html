@@ -786,6 +786,145 @@
         .legend-dot.d { background: var(--disagree); }
         .legend-dot.sd { background: var(--strongly-disagree); }
 
+        /* Tabs */
+        .chart-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-subtle);
+            padding-bottom: 0.5rem;
+        }
+
+        .chart-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .chart-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-muted);
+        }
+
+        .chart-tab.active {
+            color: var(--text-primary);
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        .chart-tab-content {
+            display: none;
+        }
+
+        .chart-tab-content.active {
+            display: block;
+        }
+
+        /* Question selector */
+        .question-selector {
+            margin-bottom: 1rem;
+        }
+
+        .question-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            font-family: inherit;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-muted);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .question-select:hover, .question-select:focus {
+            border-color: var(--accent-gold);
+            outline: none;
+        }
+
+        /* Single question chart */
+        .single-question-chart {
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .question-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .question-stat {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 10px;
+            background: var(--bg-muted);
+        }
+
+        .question-stat-value {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .question-stat-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .question-stat.sa .question-stat-value { color: var(--strongly-agree); }
+        .question-stat.a .question-stat-value { color: var(--agree); }
+        .question-stat.d .question-stat-value { color: var(--disagree); }
+        .question-stat.sd .question-stat-value { color: var(--strongly-disagree); }
+
+        /* Download buttons */
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+
+        .chart-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.85rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-muted);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chart-action-btn:hover {
+            background: var(--accent-gold);
+            color: white;
+            border-color: var(--accent-gold);
+        }
+
+        .chart-action-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
         @media (max-width: 1000px) {
             .survey-cards {
                 grid-template-columns: 1fr;
@@ -989,15 +1128,55 @@
 
             <div class="detail-content">
                 <div class="chart-panel">
-                    <h3 class="panel-title">Response Distribution by Question</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="familyChart"></canvas>
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchFamilyTab('overview')">All Questions</button>
+                        <button class="chart-tab" onclick="switchFamilyTab('single')">By Question</button>
                     </div>
-                    <div class="legend">
-                        <div class="legend-item"><div class="legend-dot sa"></div> Strongly Agree</div>
-                        <div class="legend-item"><div class="legend-dot a"></div> Agree</div>
-                        <div class="legend-item"><div class="legend-dot d"></div> Disagree</div>
-                        <div class="legend-item"><div class="legend-dot sd"></div> Strongly Disagree</div>
+
+                    <!-- Overview Tab -->
+                    <div class="chart-tab-content active" id="familyOverviewTab">
+                        <div class="chart-wrapper">
+                            <canvas id="familyChart"></canvas>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><div class="legend-dot sa"></div> Strongly Agree</div>
+                            <div class="legend-item"><div class="legend-dot a"></div> Agree</div>
+                            <div class="legend-item"><div class="legend-dot d"></div> Disagree</div>
+                            <div class="legend-item"><div class="legend-dot sd"></div> Strongly Disagree</div>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn" onclick="downloadChart('familyChart', 'family-survey-overview')">
+                                <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                Download PNG
+                            </button>
+                            <button class="chart-action-btn" onclick="copyChartToClipboard('familyChart')">
+                                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Single Question Tab -->
+                    <div class="chart-tab-content" id="familySingleTab">
+                        <div class="question-selector">
+                            <select class="question-select" id="familyQuestionSelect" onchange="updateFamilySingleChart()">
+                            </select>
+                        </div>
+                        <div class="single-question-chart">
+                            <canvas id="familySingleChart"></canvas>
+                        </div>
+                        <div class="question-stats" id="familyQuestionStats">
+                        </div>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn" onclick="downloadChart('familySingleChart', 'family-question-detail')">
+                                <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                Download PNG
+                            </button>
+                            <button class="chart-action-btn" onclick="copyChartToClipboard('familySingleChart')">
+                                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                Copy
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1069,21 +1248,61 @@
 
             <div class="detail-content">
                 <div class="chart-panel">
-                    <h3 class="panel-title">Response Distribution by Question</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="facultyChart"></canvas>
-                    </div>
-                    <div class="legend">
-                        <div class="legend-item"><div class="legend-dot sa"></div> Strongly Agree</div>
-                        <div class="legend-item"><div class="legend-dot a"></div> Agree</div>
-                        <div class="legend-item"><div class="legend-dot d"></div> Disagree</div>
-                        <div class="legend-item"><div class="legend-dot sd"></div> Strongly Disagree</div>
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchFacultyTab('overview')">All Questions</button>
+                        <button class="chart-tab" onclick="switchFacultyTab('single')">By Question</button>
                     </div>
 
-                    <div class="trend-section">
-                        <h4 class="panel-title" style="margin-bottom: 0.5rem; font-size: 0.95rem;">Response Timeline</h4>
-                        <div class="trend-chart-wrapper">
-                            <canvas id="facultyTimelineChart"></canvas>
+                    <!-- Overview Tab -->
+                    <div class="chart-tab-content active" id="facultyOverviewTab">
+                        <div class="chart-wrapper">
+                            <canvas id="facultyChart"></canvas>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><div class="legend-dot sa"></div> Strongly Agree</div>
+                            <div class="legend-item"><div class="legend-dot a"></div> Agree</div>
+                            <div class="legend-item"><div class="legend-dot d"></div> Disagree</div>
+                            <div class="legend-item"><div class="legend-dot sd"></div> Strongly Disagree</div>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn" onclick="downloadChart('facultyChart', 'faculty-survey-overview')">
+                                <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                Download PNG
+                            </button>
+                            <button class="chart-action-btn" onclick="copyChartToClipboard('facultyChart')">
+                                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                Copy
+                            </button>
+                        </div>
+
+                        <div class="trend-section">
+                            <h4 class="panel-title" style="margin-bottom: 0.5rem; font-size: 0.95rem;">Response Timeline</h4>
+                            <div class="trend-chart-wrapper">
+                                <canvas id="facultyTimelineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Question Tab -->
+                    <div class="chart-tab-content" id="facultySingleTab">
+                        <div class="question-selector">
+                            <select class="question-select" id="facultyQuestionSelect" onchange="updateFacultySingleChart()">
+                            </select>
+                        </div>
+                        <div class="single-question-chart">
+                            <canvas id="facultySingleChart"></canvas>
+                        </div>
+                        <div class="question-stats" id="facultyQuestionStats">
+                        </div>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn" onclick="downloadChart('facultySingleChart', 'faculty-question-detail')">
+                                <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                Download PNG
+                            </button>
+                            <button class="chart-action-btn" onclick="copyChartToClipboard('facultySingleChart')">
+                                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                Copy
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1183,8 +1402,234 @@
         ];
 
         let familyChart, facultyChart, facultyTimelineChart;
+        let familySingleChart, facultySingleChart;
         let familyData = { distribution: [], count: 0, feedback: [] };
         let facultyData = { distribution: [], count: 0, feedback: [], timeline: [] };
+
+        // Tab switching
+        function switchFamilyTab(tab) {
+            const tabs = document.querySelectorAll('#familyDetail .chart-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('familyOverviewTab').classList.remove('active');
+            document.getElementById('familySingleTab').classList.remove('active');
+
+            if (tab === 'overview') {
+                document.getElementById('familyOverviewTab').classList.add('active');
+            } else {
+                document.getElementById('familySingleTab').classList.add('active');
+                populateFamilyQuestionSelect();
+                if (!familySingleChart) createFamilySingleChart();
+                updateFamilySingleChart();
+            }
+        }
+
+        function switchFacultyTab(tab) {
+            const tabs = document.querySelectorAll('#facultyDetail .chart-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('facultyOverviewTab').classList.remove('active');
+            document.getElementById('facultySingleTab').classList.remove('active');
+
+            if (tab === 'overview') {
+                document.getElementById('facultyOverviewTab').classList.add('active');
+            } else {
+                document.getElementById('facultySingleTab').classList.add('active');
+                populateFacultyQuestionSelect();
+                if (!facultySingleChart) createFacultySingleChart();
+                updateFacultySingleChart();
+            }
+        }
+
+        // Populate question selectors
+        function populateFamilyQuestionSelect() {
+            const select = document.getElementById('familyQuestionSelect');
+            if (select.options.length === 0) {
+                FAMILY_QUESTIONS_FULL.forEach((q, i) => {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = q;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        function populateFacultyQuestionSelect() {
+            const select = document.getElementById('facultyQuestionSelect');
+            if (select.options.length === 0) {
+                FACULTY_QUESTIONS_FULL.forEach((q, i) => {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = q;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        // Create single question charts
+        function createFamilySingleChart() {
+            const ctx = document.getElementById('familySingleChart').getContext('2d');
+            familySingleChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Strongly Agree', 'Agree', 'Disagree', 'Strongly Disagree'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [COLORS.stronglyAgree, COLORS.agree, COLORS.disagree, COLORS.stronglyDisagree],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#012141',
+                            titleFont: { family: 'DM Sans', size: 12 },
+                            bodyFont: { family: 'DM Sans', size: 11 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function createFacultySingleChart() {
+            const ctx = document.getElementById('facultySingleChart').getContext('2d');
+            facultySingleChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Strongly Agree', 'Agree', 'Disagree', 'Strongly Disagree'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [COLORS.stronglyAgree, COLORS.agree, COLORS.disagree, COLORS.stronglyDisagree],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#012141',
+                            titleFont: { family: 'DM Sans', size: 12 },
+                            bodyFont: { family: 'DM Sans', size: 11 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        // Update single question charts
+        function updateFamilySingleChart() {
+            const select = document.getElementById('familyQuestionSelect');
+            const index = parseInt(select.value) || 0;
+
+            if (!familyData.distribution[index] || !familySingleChart) return;
+
+            const dist = familyData.distribution[index];
+            const sa = dist['Strongly Agree'] || 0;
+            const a = dist['Agree'] || 0;
+            const d = dist['Disagree'] || 0;
+            const sd = dist['Strongly Disagree'] || 0;
+            const total = sa + a + d + sd;
+
+            familySingleChart.data.datasets[0].data = [sa, a, d, sd];
+            familySingleChart.update('none');
+
+            // Update stats
+            document.getElementById('familyQuestionStats').innerHTML = `
+                <div class="question-stat sa">
+                    <div class="question-stat-value">${sa}</div>
+                    <div class="question-stat-label">Strongly Agree</div>
+                </div>
+                <div class="question-stat a">
+                    <div class="question-stat-value">${a}</div>
+                    <div class="question-stat-label">Agree</div>
+                </div>
+                <div class="question-stat d">
+                    <div class="question-stat-value">${d}</div>
+                    <div class="question-stat-label">Disagree</div>
+                </div>
+                <div class="question-stat sd">
+                    <div class="question-stat-value">${sd}</div>
+                    <div class="question-stat-label">Strongly Disagree</div>
+                </div>
+            `;
+        }
+
+        function updateFacultySingleChart() {
+            const select = document.getElementById('facultyQuestionSelect');
+            const index = parseInt(select.value) || 0;
+
+            if (!facultyData.distribution[index] || !facultySingleChart) return;
+
+            const dist = facultyData.distribution[index];
+            const sa = dist['Strongly Agree'] || 0;
+            const a = dist['Agree'] || 0;
+            const d = dist['Disagree'] || 0;
+            const sd = dist['Strongly Disagree'] || 0;
+
+            facultySingleChart.data.datasets[0].data = [sa, a, d, sd];
+            facultySingleChart.update('none');
+
+            // Update stats
+            document.getElementById('facultyQuestionStats').innerHTML = `
+                <div class="question-stat sa">
+                    <div class="question-stat-value">${sa}</div>
+                    <div class="question-stat-label">Strongly Agree</div>
+                </div>
+                <div class="question-stat a">
+                    <div class="question-stat-value">${a}</div>
+                    <div class="question-stat-label">Agree</div>
+                </div>
+                <div class="question-stat d">
+                    <div class="question-stat-value">${d}</div>
+                    <div class="question-stat-label">Disagree</div>
+                </div>
+                <div class="question-stat sd">
+                    <div class="question-stat-value">${sd}</div>
+                    <div class="question-stat-label">Strongly Disagree</div>
+                </div>
+            `;
+        }
+
+        // Download chart as PNG
+        function downloadChart(chartId, filename) {
+            const canvas = document.getElementById(chartId);
+            const link = document.createElement('a');
+            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+        }
+
+        // Copy chart to clipboard
+        async function copyChartToClipboard(chartId) {
+            const canvas = document.getElementById(chartId);
+            try {
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                // Show feedback
+                const btn = event.target.closest('.chart-action-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!';
+                setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Copy failed. Try downloading instead.');
+            }
+        }
 
         // Navigation
         function showHome() {
