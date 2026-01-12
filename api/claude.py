@@ -86,7 +86,7 @@ Here is the survey data:
             }
 
             payload = {
-                'model': 'claude-3-5-sonnet-20241022',
+                'model': 'claude-3-5-sonnet-latest',
                 'max_tokens': 1024,
                 'system': system_prompt,
                 'messages': [
