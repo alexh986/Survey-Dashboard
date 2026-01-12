@@ -17,22 +17,27 @@ class handler(BaseHTTPRequestHandler):
             survey_data = data.get('surveyData', {})
             survey_type = data.get('surveyType', 'family')
 
-            # Build the system prompt with survey context
-            system_prompt = f"""You are an expert data analyst helping school administrators understand survey results. You have access to {survey_type} survey data from Breaking Ground Schools.
+            # Build the system prompt based on survey type
+            if survey_type == 'all':
+                # Combined survey data
+                family_data = survey_data.get('family', {})
+                faculty_data = survey_data.get('faculty', {})
+                data_section = f"""
+FAMILY SURVEY DATA ({family_data.get('count', 0)} responses):
+{json.dumps(family_data.get('distribution', []), indent=2)}
 
-Your role is to:
-- Provide clear, actionable insights
-- Reference specific numbers and percentages from the data
-- Identify patterns and concerns
-- Be concise but thorough
-- Use a professional, helpful tone
+Family Feedback:
+{json.dumps(family_data.get('feedback', []), indent=2)}
 
-When discussing satisfaction levels:
-- "Strongly Agree" and "Agree" are positive responses
-- "Disagree" and "Strongly Disagree" indicate concerns
+FACULTY SURVEY DATA ({faculty_data.get('count', 0)} responses):
+{json.dumps(faculty_data.get('distribution', []), indent=2)}
 
-Here is the survey data:
-
+Faculty Feedback:
+{json.dumps(faculty_data.get('feedback', []), indent=2)}
+"""
+            else:
+                # Single survey data
+                data_section = f"""
 RESPONSE DISTRIBUTIONS:
 {json.dumps(survey_data.get('distribution', []), indent=2)}
 
@@ -45,6 +50,23 @@ OPEN-ENDED FEEDBACK:
 TOTAL RESPONSES: {survey_data.get('count', 0)}
 """
 
+            system_prompt = f"""You are an expert data analyst helping school administrators understand survey results from Breaking Ground Schools.
+
+Your role is to:
+- Provide clear, actionable insights
+- Reference specific numbers and percentages from the data
+- Identify patterns and concerns
+- Be concise but thorough (2-3 paragraphs max)
+- Use a professional, helpful tone
+
+When discussing satisfaction levels:
+- "Strongly Agree" and "Agree" are positive responses
+- "Disagree" and "Strongly Disagree" indicate concerns
+
+Here is the survey data:
+{data_section}
+"""
+
             # Call Claude API
             url = 'https://api.anthropic.com/v1/messages'
             headers = {
@@ -54,7 +76,7 @@ TOTAL RESPONSES: {survey_data.get('count', 0)}
             }
 
             payload = {
-                'model': 'claude-sonnet-4-20250514',
+                'model': 'claude-3-5-sonnet-20241022',
                 'max_tokens': 1024,
                 'system': system_prompt,
                 'messages': [
@@ -79,6 +101,14 @@ TOTAL RESPONSES: {survey_data.get('count', 0)}
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({'response': assistant_message}).encode())
+
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode('utf-8')
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({'error': f'API Error: {error_body}'}).encode())
 
         except Exception as e:
             self.send_response(500)
