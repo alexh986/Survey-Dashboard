@@ -1159,54 +1159,146 @@
             }
         }
 
-        /* AI Chat Panel Styles */
-        .chat-panel {
-            background: var(--bg-card);
-            border: 2px solid rgba(40, 170, 225, 0.5);
-            border-radius: 20px;
-            padding: 1.75rem;
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            height: 500px;
-        }
-
-        .chat-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--bg-muted);
-        }
-
-        .chat-header-icon {
-            width: 36px;
-            height: 36px;
+        /* Floating Chat Button & Drawer Styles */
+        .chat-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--accent-primary), #5BC0EB);
-            border-radius: 10px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(40, 170, 225, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s;
+            z-index: 1000;
         }
 
-        .chat-header-icon svg {
+        .chat-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(40, 170, 225, 0.5);
+        }
+
+        .chat-fab svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .chat-fab-label {
+            position: absolute;
+            right: 70px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .chat-fab:hover .chat-fab-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .chat-drawer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 420px;
+            height: 600px;
+            max-height: calc(100vh - 100px);
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .chat-drawer.open {
+            transform: translateY(0);
+        }
+
+        .chat-drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--bg-muted);
+            background: linear-gradient(135deg, var(--accent-primary), #5BC0EB);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-drawer-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+        }
+
+        .chat-drawer-title svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .chat-drawer-title span {
+            font-family: 'Fraunces', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .chat-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .chat-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-close-btn svg {
             width: 20px;
             height: 20px;
             fill: white;
         }
 
-        .chat-header-title {
-            font-family: 'Fraunces', serif;
-            font-weight: 500;
-            font-size: 1.1rem;
-            color: var(--text-primary);
+        .chat-context-badge {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-muted);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .chat-context-badge strong {
+            color: var(--accent-primary);
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            margin-bottom: 1rem;
+            padding: 1rem 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
@@ -1217,7 +1309,7 @@
             border-radius: 12px;
             font-size: 0.9rem;
             line-height: 1.5;
-            max-width: 95%;
+            max-width: 90%;
         }
 
         .chat-message.user {
@@ -1271,7 +1363,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            padding: 0 1.5rem 1rem;
         }
 
         .chat-suggestion {
@@ -1294,6 +1386,9 @@
         .chat-input-container {
             display: flex;
             gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--bg-muted);
+            background: white;
         }
 
         .chat-input {
@@ -1346,6 +1441,36 @@
             width: 20px;
             height: 20px;
             fill: white;
+        }
+
+        .chat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .chat-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 500px) {
+            .chat-drawer {
+                width: 100%;
+                border-radius: 20px 20px 0 0;
+            }
+
+            .chat-fab {
+                bottom: 1rem;
+                right: 1rem;
+            }
         }
     </style>
 </head>
@@ -1599,32 +1724,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- AI Chat Panel -->
-                <div class="chat-panel">
-                    <div class="chat-header">
-                        <div class="chat-header-icon">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                        </div>
-                        <span class="chat-header-title">Ask Claude</span>
-                    </div>
-                    <div class="chat-messages" id="familyChatMessages">
-                        <div class="chat-message assistant">
-                            Hi! I can help you analyze the family survey data. Try asking me about trends, concerns, or specific questions.
-                        </div>
-                    </div>
-                    <div class="chat-suggestions" id="familyChatSuggestions">
-                        <button class="chat-suggestion" onclick="askSuggestion('family', 'What are the main concerns?')">Main concerns?</button>
-                        <button class="chat-suggestion" onclick="askSuggestion('family', 'Which question has the lowest satisfaction?')">Lowest satisfaction?</button>
-                        <button class="chat-suggestion" onclick="askSuggestion('family', 'Summarize the feedback')">Summarize feedback</button>
-                    </div>
-                    <div class="chat-input-container">
-                        <input type="text" class="chat-input" id="familyChatInput" placeholder="Ask about the survey data..." onkeypress="handleChatKeypress(event, 'family')">
-                        <button class="chat-send-btn" onclick="sendChatMessage('family')" id="familySendBtn">
-                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -1738,35 +1837,50 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- AI Chat Panel -->
-                <div class="chat-panel">
-                    <div class="chat-header">
-                        <div class="chat-header-icon">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                        </div>
-                        <span class="chat-header-title">Ask Claude</span>
-                    </div>
-                    <div class="chat-messages" id="facultyChatMessages">
-                        <div class="chat-message assistant">
-                            Hi! I can help you analyze the faculty survey data. Ask me about satisfaction trends, concerns, or feedback themes.
-                        </div>
-                    </div>
-                    <div class="chat-suggestions" id="facultyChatSuggestions">
-                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'What are the top concerns?')">Top concerns?</button>
-                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'How is team communication rated?')">Communication rating?</button>
-                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'Summarize the positive feedback')">Positive feedback</button>
-                    </div>
-                    <div class="chat-input-container">
-                        <input type="text" class="chat-input" id="facultyChatInput" placeholder="Ask about the survey data..." onkeypress="handleChatKeypress(event, 'faculty')">
-                        <button class="chat-send-btn" onclick="sendChatMessage('faculty')" id="facultySendBtn">
-                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
+
+    <!-- Floating Chat Button -->
+    <button class="chat-fab" onclick="toggleChat()" id="chatFab">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        <span class="chat-fab-label">Ask Claude</span>
+    </button>
+
+    <!-- Chat Overlay -->
+    <div class="chat-overlay" id="chatOverlay" onclick="toggleChat()"></div>
+
+    <!-- Chat Drawer -->
+    <div class="chat-drawer" id="chatDrawer">
+        <div class="chat-drawer-header">
+            <div class="chat-drawer-title">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span>Ask Claude</span>
+            </div>
+            <button class="chat-close-btn" onclick="toggleChat()">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+        <div class="chat-context-badge" id="chatContextBadge">
+            Analyzing <strong>all survey data</strong>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message assistant">
+                Hi! I can help you analyze your survey data. Ask me about trends, concerns, satisfaction levels, or feedback themes.
+            </div>
+        </div>
+        <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chat-suggestion" onclick="askSuggestion('What are the main concerns?')">Main concerns?</button>
+            <button class="chat-suggestion" onclick="askSuggestion('Compare family vs faculty satisfaction')">Compare surveys</button>
+            <button class="chat-suggestion" onclick="askSuggestion('Summarize the feedback')">Summarize feedback</button>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask about the survey data..." onkeypress="handleChatKeypress(event)">
+            <button class="chat-send-btn" onclick="sendChatMessage()" id="chatSendBtn">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
 
     <script>
         // Configuration
@@ -2939,12 +3053,63 @@
         // AI CHAT FUNCTIONALITY
         // ============================================
 
+        let chatOpen = false;
+
+        // Toggle chat drawer
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            document.getElementById('chatDrawer').classList.toggle('open', chatOpen);
+            document.getElementById('chatOverlay').classList.toggle('open', chatOpen);
+
+            if (chatOpen) {
+                updateChatContext();
+                document.getElementById('chatInput').focus();
+            }
+        }
+
+        // Determine current survey context
+        function getCurrentSurveyType() {
+            if (document.getElementById('familyDetail').classList.contains('active')) {
+                return 'family';
+            } else if (document.getElementById('facultyDetail').classList.contains('active')) {
+                return 'faculty';
+            }
+            return 'all'; // On home view, analyze both
+        }
+
+        // Update context badge
+        function updateChatContext() {
+            const surveyType = getCurrentSurveyType();
+            const badge = document.getElementById('chatContextBadge');
+
+            if (surveyType === 'family') {
+                badge.innerHTML = 'Analyzing <strong>Family Survey</strong> data';
+            } else if (surveyType === 'faculty') {
+                badge.innerHTML = 'Analyzing <strong>Faculty Survey</strong> data';
+            } else {
+                badge.innerHTML = 'Analyzing <strong>all survey data</strong>';
+            }
+        }
+
         // Build survey context for Claude
         function buildSurveyContext(surveyType) {
+            if (surveyType === 'all') {
+                // Combine both surveys
+                const familyContext = buildSingleSurveyContext('family');
+                const facultyContext = buildSingleSurveyContext('faculty');
+                return {
+                    family: familyContext,
+                    faculty: facultyContext,
+                    totalResponses: familyContext.count + facultyContext.count
+                };
+            }
+            return buildSingleSurveyContext(surveyType);
+        }
+
+        function buildSingleSurveyContext(surveyType) {
             const data = surveyType === 'family' ? familyData : facultyData;
             const questions = surveyType === 'family' ? FAMILY_QUESTIONS_FULL : FACULTY_QUESTIONS_FULL;
 
-            // Calculate percentages for each question
             const distributionWithPercents = data.distribution.map((dist, i) => {
                 const total = Object.values(dist).reduce((a, b) => a + b, 0);
                 if (total === 0) return { question: questions[i], responses: dist };
@@ -2957,15 +3122,17 @@
             });
 
             return {
+                surveyName: surveyType === 'family' ? 'Family Survey' : 'Faculty Survey',
                 distribution: distributionWithPercents,
                 questions: questions,
-                feedback: data.feedback.slice(0, 20), // Limit feedback to avoid token limits
+                feedback: data.feedback.slice(0, 15),
                 count: data.count
             };
         }
 
         // Send message to Claude API
-        async function sendToClaudeAPI(question, surveyType) {
+        async function sendToClaudeAPI(question) {
+            const surveyType = getCurrentSurveyType();
             const surveyData = buildSurveyContext(surveyType);
 
             const response = await fetch('/api/claude', {
@@ -2993,8 +3160,8 @@
         }
 
         // Render a chat message
-        function renderChatMessage(surveyType, role, content) {
-            const messagesContainer = document.getElementById(`${surveyType}ChatMessages`);
+        function renderChatMessage(role, content) {
+            const messagesContainer = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${role}`;
 
@@ -3028,9 +3195,9 @@
         }
 
         // Handle sending a chat message
-        async function sendChatMessage(surveyType) {
-            const input = document.getElementById(`${surveyType}ChatInput`);
-            const sendBtn = document.getElementById(`${surveyType}SendBtn`);
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('chatSendBtn');
             const question = input.value.trim();
 
             if (!question) return;
@@ -3040,23 +3207,23 @@
             sendBtn.disabled = true;
 
             // Hide suggestions after first message
-            document.getElementById(`${surveyType}ChatSuggestions`).style.display = 'none';
+            document.getElementById('chatSuggestions').style.display = 'none';
 
             // Render user message
-            renderChatMessage(surveyType, 'user', question);
+            renderChatMessage('user', question);
 
             // Show loading message
-            const loadingMsg = renderChatMessage(surveyType, 'assistant loading', 'Analyzing');
+            const loadingMsg = renderChatMessage('assistant loading', 'Analyzing');
 
             try {
-                const response = await sendToClaudeAPI(question, surveyType);
+                const response = await sendToClaudeAPI(question);
 
                 // Remove loading message and show response
                 loadingMsg.remove();
-                renderChatMessage(surveyType, 'assistant', response);
+                renderChatMessage('assistant', response);
             } catch (error) {
                 loadingMsg.remove();
-                renderChatMessage(surveyType, 'assistant', `Sorry, I encountered an error: ${error.message}. Please try again.`);
+                renderChatMessage('assistant', `Sorry, I encountered an error: ${error.message}. Please try again.`);
             }
 
             sendBtn.disabled = false;
@@ -3064,16 +3231,16 @@
         }
 
         // Handle Enter key in chat input
-        function handleChatKeypress(event, surveyType) {
+        function handleChatKeypress(event) {
             if (event.key === 'Enter') {
-                sendChatMessage(surveyType);
+                sendChatMessage();
             }
         }
 
         // Handle suggestion button clicks
-        function askSuggestion(surveyType, question) {
-            document.getElementById(`${surveyType}ChatInput`).value = question;
-            sendChatMessage(surveyType);
+        function askSuggestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendChatMessage();
         }
 
         // Initialize
