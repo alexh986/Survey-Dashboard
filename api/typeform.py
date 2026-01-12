@@ -7,7 +7,7 @@ import os
 # Fix SSL certificate verification
 ssl._create_default_https_context = ssl._create_unverified_context
 
-TYPEFORM_TOKEN = os.environ.get('TYPEFORM_TOKEN')
+TYPEFORM_TOKEN = os.environ.get('TYPEFORM_TOKEN', '').strip()
 TYPEFORM_FORM_ID = os.environ.get('TYPEFORM_FORM_ID', 'LNhHpdkI')
 
 class handler(BaseHTTPRequestHandler):
