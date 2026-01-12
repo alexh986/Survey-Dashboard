@@ -4,11 +4,7 @@ import urllib.error
 import json
 import os
 
-ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY')
-
-# Debug: check if API key is set
-if not ANTHROPIC_API_KEY:
-    print("WARNING: ANTHROPIC_API_KEY is not set!")
+ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '').strip()
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
