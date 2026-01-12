@@ -1158,6 +1158,195 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* AI Chat Panel Styles */
+        .chat-panel {
+            background: var(--bg-card);
+            border: 2px solid rgba(40, 170, 225, 0.5);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--bg-muted);
+        }
+
+        .chat-header-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), #5BC0EB);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .chat-header-title {
+            font-family: 'Fraunces', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-message {
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 95%;
+        }
+
+        .chat-message.user {
+            background: linear-gradient(135deg, var(--accent-primary), #5BC0EB);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.assistant {
+            background: var(--bg-muted);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message.assistant p {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .chat-message.assistant p:last-child {
+            margin-bottom: 0;
+        }
+
+        .chat-message.assistant ul, .chat-message.assistant ol {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .chat-message.assistant li {
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-message.loading {
+            background: var(--bg-muted);
+            color: var(--text-muted);
+        }
+
+        .chat-message.loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chat-suggestion {
+            padding: 0.5rem 0.875rem;
+            background: var(--bg-muted);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-suggestion:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--bg-muted);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: var(--bg-muted);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: white;
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .chat-send-btn {
+            padding: 0.875rem 1.25rem;
+            background: linear-gradient(135deg, var(--accent-primary), #5BC0EB);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 170, 225, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .chat-send-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
     </style>
 </head>
 <body>
@@ -1410,6 +1599,32 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- AI Chat Panel -->
+                <div class="chat-panel">
+                    <div class="chat-header">
+                        <div class="chat-header-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
+                        <span class="chat-header-title">Ask Claude</span>
+                    </div>
+                    <div class="chat-messages" id="familyChatMessages">
+                        <div class="chat-message assistant">
+                            Hi! I can help you analyze the family survey data. Try asking me about trends, concerns, or specific questions.
+                        </div>
+                    </div>
+                    <div class="chat-suggestions" id="familyChatSuggestions">
+                        <button class="chat-suggestion" onclick="askSuggestion('family', 'What are the main concerns?')">Main concerns?</button>
+                        <button class="chat-suggestion" onclick="askSuggestion('family', 'Which question has the lowest satisfaction?')">Lowest satisfaction?</button>
+                        <button class="chat-suggestion" onclick="askSuggestion('family', 'Summarize the feedback')">Summarize feedback</button>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="familyChatInput" placeholder="Ask about the survey data..." onkeypress="handleChatKeypress(event, 'family')">
+                        <button class="chat-send-btn" onclick="sendChatMessage('family')" id="familySendBtn">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1521,6 +1736,32 @@
                         <div id="facultyFeedback">
                             <!-- Populated by JS -->
                         </div>
+                    </div>
+                </div>
+
+                <!-- AI Chat Panel -->
+                <div class="chat-panel">
+                    <div class="chat-header">
+                        <div class="chat-header-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
+                        <span class="chat-header-title">Ask Claude</span>
+                    </div>
+                    <div class="chat-messages" id="facultyChatMessages">
+                        <div class="chat-message assistant">
+                            Hi! I can help you analyze the faculty survey data. Ask me about satisfaction trends, concerns, or feedback themes.
+                        </div>
+                    </div>
+                    <div class="chat-suggestions" id="facultyChatSuggestions">
+                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'What are the top concerns?')">Top concerns?</button>
+                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'How is team communication rated?')">Communication rating?</button>
+                        <button class="chat-suggestion" onclick="askSuggestion('faculty', 'Summarize the positive feedback')">Positive feedback</button>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="facultyChatInput" placeholder="Ask about the survey data..." onkeypress="handleChatKeypress(event, 'faculty')">
+                        <button class="chat-send-btn" onclick="sendChatMessage('faculty')" id="facultySendBtn">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2692,6 +2933,147 @@
                 hour12: true
             });
             document.getElementById('lastUpdated').textContent = `Updated ${time}`;
+        }
+
+        // ============================================
+        // AI CHAT FUNCTIONALITY
+        // ============================================
+
+        // Build survey context for Claude
+        function buildSurveyContext(surveyType) {
+            const data = surveyType === 'family' ? familyData : facultyData;
+            const questions = surveyType === 'family' ? FAMILY_QUESTIONS_FULL : FACULTY_QUESTIONS_FULL;
+
+            // Calculate percentages for each question
+            const distributionWithPercents = data.distribution.map((dist, i) => {
+                const total = Object.values(dist).reduce((a, b) => a + b, 0);
+                if (total === 0) return { question: questions[i], responses: dist };
+
+                const percents = {};
+                for (const [key, val] of Object.entries(dist)) {
+                    percents[key] = `${Math.round((val / total) * 100)}%`;
+                }
+                return { question: questions[i], responses: percents, rawCounts: dist };
+            });
+
+            return {
+                distribution: distributionWithPercents,
+                questions: questions,
+                feedback: data.feedback.slice(0, 20), // Limit feedback to avoid token limits
+                count: data.count
+            };
+        }
+
+        // Send message to Claude API
+        async function sendToClaudeAPI(question, surveyType) {
+            const surveyData = buildSurveyContext(surveyType);
+
+            const response = await fetch('/api/claude', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    question: question,
+                    surveyData: surveyData,
+                    surveyType: surveyType
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get response from Claude');
+            }
+
+            const result = await response.json();
+            if (result.error) {
+                throw new Error(result.error);
+            }
+
+            return result.response;
+        }
+
+        // Render a chat message
+        function renderChatMessage(surveyType, role, content) {
+            const messagesContainer = document.getElementById(`${surveyType}ChatMessages`);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${role}`;
+
+            if (role === 'assistant') {
+                // Simple markdown-like formatting
+                content = content
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/\n- /g, '</p><ul><li>')
+                    .replace(/\n(\d+)\. /g, '</p><ol><li>')
+                    .replace(/<\/li>(?=<li>)/g, '</li>')
+                    .replace(/<li>([^<]*?)(?=<\/p>|<li>|$)/g, '<li>$1</li>');
+
+                if (content.includes('<ul>')) {
+                    content = content.replace(/<\/p><ul>/g, '<ul>').replace(/<ul>(?!.*<\/ul>)/g, '<ul>') + '</ul>';
+                }
+                if (content.includes('<ol>')) {
+                    content = content.replace(/<\/p><ol>/g, '<ol>').replace(/<ol>(?!.*<\/ol>)/g, '<ol>') + '</ol>';
+                }
+
+                messageDiv.innerHTML = `<p>${content}</p>`;
+            } else {
+                messageDiv.textContent = content;
+            }
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            return messageDiv;
+        }
+
+        // Handle sending a chat message
+        async function sendChatMessage(surveyType) {
+            const input = document.getElementById(`${surveyType}ChatInput`);
+            const sendBtn = document.getElementById(`${surveyType}SendBtn`);
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            // Clear input and disable send
+            input.value = '';
+            sendBtn.disabled = true;
+
+            // Hide suggestions after first message
+            document.getElementById(`${surveyType}ChatSuggestions`).style.display = 'none';
+
+            // Render user message
+            renderChatMessage(surveyType, 'user', question);
+
+            // Show loading message
+            const loadingMsg = renderChatMessage(surveyType, 'assistant loading', 'Analyzing');
+
+            try {
+                const response = await sendToClaudeAPI(question, surveyType);
+
+                // Remove loading message and show response
+                loadingMsg.remove();
+                renderChatMessage(surveyType, 'assistant', response);
+            } catch (error) {
+                loadingMsg.remove();
+                renderChatMessage(surveyType, 'assistant', `Sorry, I encountered an error: ${error.message}. Please try again.`);
+            }
+
+            sendBtn.disabled = false;
+            input.focus();
+        }
+
+        // Handle Enter key in chat input
+        function handleChatKeypress(event, surveyType) {
+            if (event.key === 'Enter') {
+                sendChatMessage(surveyType);
+            }
+        }
+
+        // Handle suggestion button clicks
+        function askSuggestion(surveyType, question) {
+            document.getElementById(`${surveyType}ChatInput`).value = question;
+            sendChatMessage(surveyType);
         }
 
         // Initialize
